@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing SEARCH_API_URL" }, { status: 500 });
   }
 
-  const { query } = (await req.json()) as { query?: string };
+  const { query, patientId } = (await req.json()) as { query?: string; patientId?: string };
 
   if (!query?.trim()) return NextResponse.json({ results: [] });
 
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
   const upstream = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query }),
+    body: JSON.stringify({ query, patientId }),
     cache: "no-store",
   });
 

@@ -1,6 +1,7 @@
 // src/app/api/patients/[id]/documents/[docId]/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { deleteFileFromIndex } from "@/lib/extractApi";
 
 type Ctx = {
   params: Promise<{ id: string; docId: string }>;
@@ -45,17 +46,10 @@ export async function DELETE(_req: Request, ctx: Ctx) {
     const { docId } = await ctx.params;
 
     // Delete from Qdrant via external API (Best effort)
-    const extractUrl = process.env.EXTRACT_API_URL;
-    if (extractUrl) {
-      try {
-        await fetch(`${extractUrl}/delete-file`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ docId }),
-        });
-      } catch (e) {
-        console.error("Failed to delete from Qdrant:", e);
-      }
+    try {
+      await deleteFileFromIndex(docId);
+    } catch (e) {
+      console.error("Failed to delete from Qdrant:", e);
     }
 
     await db.patientDocument.delete({

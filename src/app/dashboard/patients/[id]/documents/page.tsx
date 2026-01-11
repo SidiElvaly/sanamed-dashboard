@@ -87,7 +87,11 @@ export default function PatientDocumentsPage({
 
                 // 2. Extract & Index (Blocking UI update until success)
                 setExtracting(true);
-                await callExtractFileAPI(file, patient.id);
+                // Pass the mongoDocumentId (uploadedDocId) to ensure it's indexed correctly
+                // even if this call is technically redundant with the backend's auto-indexing.
+                if (uploadedDocId) {
+                    await callExtractFileAPI(file, patient.id, uploadedDocId);
+                }
 
                 // 3. Update UI only on success
                 if (saved?.document) {

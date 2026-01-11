@@ -79,10 +79,13 @@ function extractMetaFromText(text: string) {
 }
 
 /* ----------------- Proxy APIs ----------------- */
-export async function callExtractFileAPI(file: File, patientId: string) {
+export async function callExtractFileAPI(file: File, patientId: string, mongoDocumentId?: string) {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("patientId", patientId);
+    if (mongoDocumentId) {
+        fd.append("mongoDocumentId", mongoDocumentId);
+    }
 
     const res = await fetch("/api/extract-file", {
         method: "POST",

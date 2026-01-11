@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { decodeId } from "@/lib/obfuscation";
+import { extractAndIndexFile } from "@/lib/extractApi";
 
 export async function POST(req: Request, ctx: any) {
   const params = await ctx.params;
@@ -33,6 +34,14 @@ export async function POST(req: Request, ctx: any) {
         fileName: file.name,
       },
     });
+
+    // ✅ Index in Qdrant (Best effort)
+    try {
+      await extractAndIndexFile(file, newDoc.id, patientId);
+    } catch (e) {
+      console.error("Indexing failed (background):", e);
+      // We don't fail the upload just because indexing failed, but we log it.
+    }
 
     return NextResponse.json({
       message: "✅ Document uploaded",
