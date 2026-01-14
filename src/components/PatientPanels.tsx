@@ -498,14 +498,7 @@ export function DocumentsPanel({
                         </div>
                     )}
 
-                    {searchHits.length === 0 &&
-                        semanticQ.trim() !== "" &&
-                        !searching &&
-                        !searchError && (
-                            <div className="mt-4 text-center text-sm text-slate-500 italic py-2">
-                                No relevant information found in documents.
-                            </div>
-                        )}
+
                 </div>
             </div>
 
