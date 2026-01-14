@@ -205,14 +205,14 @@ function ResultCard({ hit, isBest }: { hit: SearchHit; isBest?: boolean }) {
                 </div>
             </div>
 
-            <details className="mt-3">
-                <summary className="cursor-pointer text-xs font-medium text-slate-700 hover:text-slate-900">
-                    View extracted passage
-                </summary>
-                <p className="mt-2 whitespace-pre-wrap text-sm text-slate-700">
+            <div className="mt-3 pt-3 border-t border-slate-50">
+                <span className="block mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                    Extracted Passage
+                </span>
+                <p className="whitespace-pre-wrap text-sm text-slate-600 leading-relaxed">
                     {hit.text}
                 </p>
-            </details>
+            </div>
         </article>
     );
 }
