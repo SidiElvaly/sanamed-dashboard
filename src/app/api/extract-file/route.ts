@@ -13,11 +13,13 @@ export async function POST(req: Request) {
     const incomingFormData = await req.formData();
     const file = incomingFormData.get("file");
     const patientId = incomingFormData.get("patientId");
+    const mongoDocumentId = incomingFormData.get("mongoDocumentId");
 
     // Explicitly construct the upstream payload to ensure clarity for the extraction model service
     const upstreamFormData = new FormData();
     if (file) upstreamFormData.append("file", file);
     if (patientId) upstreamFormData.append("patientId", patientId);
+    if (mongoDocumentId) upstreamFormData.append("mongoDocumentId", mongoDocumentId);
 
     const upstream = await fetch(`${base}/extract-file`, {
       method: "POST",
